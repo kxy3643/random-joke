@@ -17,7 +17,7 @@ const jokes = [
     { q: 'What do you get when you cross a snowman with a vampire?', a: 'Frostbite' },
 ];
 
-const getRandomJokeResponse = () => {
+const getRandomJokeResponse = (request, response) => {
     const number = Math.floor(Math.random() * 16);
     const responseObj = {
       q: jokes[number].q,
