@@ -9,7 +9,7 @@ const get404Response = (request, response) => {
   response.end();
 };
 
-const getCSSResponse = (request, response, params, acceptedTypes, httpMethod) => {
+const getCSSResponse = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/css' });
   response.write(css);
   response.end();
