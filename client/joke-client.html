@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title>Joke Client</title>
+    <link href="default-styles.css" type="text/css" rel="stylesheet" />
+    <style>
+      header{
+        background-color:pink;
+        color: yellow;
+        font-size:2em;
+        padding:1em;
+      }
+      
+      h1{
+        font-family: fantasy;
+        filter: drop-shadow(5px 5px 2px #4444dd);
+      }
+      
+      section{
+        border-bottom:1px dashed gray;
+      }
+    </style>
+    <script>
+      const handleResponse = (e) => {
+        //console.log("e.target = ", e.target);
+        //console.log("e.target.response = ", e.target.response);
+        const obj = JSON.parse(e.target.response);
+        //console.log("obj = ", obj);
+
+        let length = obj.length;
+        let id = "";
+        switch(length){
+            case 1: id = "#jokeContainer"; break;
+            case 5: id = "#jokeContainer5"; break;
+            default: id = "#jokeContainer"; break;
+        }
+
+        //console.log(id);
+        let container = document.querySelector(id);
+        container.innerHTML = "";
+        for(let i = 0; i < length; i += 1){
+            let q = document.createElement('p');
+            q.innerHTML = (`${obj[i].q}`);
+            let a = document.createElement('p');
+            a.innerHTML = (`<i>${obj[i].a}</i>`);
+            let hr = document.createElement('hr');
+            container.appendChild(q);
+            container.appendChild(a);
+            if(length > 1) container.appendChild(hr);
+        }
+      };
+
+      const downloadJoke = (e) => {
+        // remember that an `Event` object gets passed along every time that an event handler or listener calls a function
+        // the `target` property of that event points at the element that sent the event, in this case a button
+        //console.log(`An element of id=${e.target.id} was clicked!`);
+
+        let numOfJokes = 1;
+        switch (e.target.id){
+            case "btnJoke5": numOfJokes = 5; break;
+            default : numOfJokes = 1; break;
+        }
+
+        const jokeURL = `/random-joke?limit=${numOfJokes}`;
+        const xhr = new XMLHttpRequest();
+        xhr.onload = handleResponse;
+        xhr.open("GET", jokeURL);
+
+        xhr.setRequestHeader('Accept', "application/javascript");
+        xhr.send();
+      }
+      
+      const init = () => {
+         // An Event *Handler*
+        // document.querySelector("#btnJoke").onclick = downloadJoke; // same as below, less typing, use which ever version you prefer
+      
+        // An Event *Listener*
+        document.querySelector("#btnJoke").addEventListener("click", downloadJoke);
+        document.querySelector("#btnJoke5").addEventListener("click", downloadJoke);
+        // **Actually, event handlers and listeners are NOT exactly the same in all use cases - what ARE the differences?**
+      }
+      
+      window.onload = init;
+     
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Are you ready to LAUGH?</h1>
+    </header>
+    
+    <section>
+      <h2>Just have time for one joke?</h2>
+      <p><button id="btnJoke">Show me a Joke!</button></p>
+      <div id="jokeContainer">
+        
+      </div>
+    </section>
+    
+    <section>
+      <h2>How about 5 jokes?</h2>
+      <p><button id="btnJoke5">Show me 5 Jokes!</button></p>
+      <div id="jokeContainer5">
+
+      </div>
+    </section>
+    
+  </body>
+</html>

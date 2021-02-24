@@ -7,6 +7,7 @@ const responseHandler = require('./responses');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
+  '/joke-client.html': htmlHandler.getIndexResponse,
   '/random-joke': responseHandler.getRandomJokeResponse,
   '/random-jokes': responseHandler.getRandomJokeResponse,
   '/default-styles.css': htmlHandler.getCSSResponse,
